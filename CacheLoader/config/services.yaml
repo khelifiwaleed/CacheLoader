@@ -1,0 +1,26 @@
+imports:
+  - { resource: packages/parameters.yaml }
+
+parameters:
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  CacheLoader\CacheLoaderBundle\Service\TranslationService:
+    arguments:
+      - '@parameter_bag'
+    public: true
+    autowire: true
+
+  CacheLoader\CacheLoaderBundle\CacheLoaderBundle:
+    public: true
+    autowire: true
+
+  CacheLoader\CacheLoaderBundle\Twig\AppExtension:
+    tags: [ 'twig.extension' ]
+    arguments:
+      $translationService: '@CacheLoader\CacheLoaderBundle\Service\TranslationService'
+    public: true
+    autowire: true

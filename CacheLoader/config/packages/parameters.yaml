@@ -1,0 +1,2 @@
+parameters:
+  trans_dir: '%kernel.project_dir%/var/translations/'
