@@ -26,7 +26,8 @@ class AppExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('cacheLoader', [$this, 'getCacheLoader']),
+            new TwigFunction('cacheLoaderObject', [$this, 'getCacheLoaderObject']),
+            new TwigFunction('cacheLoader', [$this, 'getCacheLoaderTable']),
         ];
     }
 
@@ -34,12 +35,33 @@ class AppExtension extends AbstractExtension
      * @param $param
      * @return array|null
      */
-    public function getCacheLoader($param): array|null
+    public function getCacheLoaderObject($param): array|null
     {
         try {
             $translationFile = $this->translationService->getTranslationFile();
             $cacheLoader = array_filter($translationFile, function($item) use($param){
                 return $item['LABEL'] === $param ? $item: [];
+            });
+        } catch(\Exception $e) {
+            return null;
+        }
+        return array_shift($cacheLoader);
+    }
+
+    /**
+     * @param $param
+     * @return array|null
+     */
+    public function getCacheLoaderTable($table, $param): array|null
+    {
+        try {
+            $filePath = __DIR__ . '/../../../../var/translations/' . $table . '.json';
+            if (false === file_exists($filePath)) {
+                $this->translationService->exportTableToJson($table);
+            }
+            $translationFile = $this->translationService->getCacheTable($table);
+            $cacheLoader = array_filter($translationFile, function($item) use($param){
+                return $item['id'] === (int) $param ? $item: [];
             });
         } catch(\Exception $e) {
             return null;

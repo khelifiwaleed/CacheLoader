@@ -1,6 +1,6 @@
 {
     "name": "cachemaster/cache-loader",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "minimum-stability": "stable",
     "description": "this component loads translations from the database and stores them in a cache for later use",
     "type": "package",

@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\DBAL\Query\QueryBuilder;
 
 /**
  * Class TranslationService
@@ -39,6 +40,9 @@ class TranslationService
         $this->filesystem = $filesystem;
     }
 
+
+
+
     /**
      * @return array|null
      */
@@ -62,11 +66,6 @@ class TranslationService
         }
         return file_get_contents($file);
     }
-
-
-
-
-
 
     public function createContentFile (array $array, $fileName): JsonResponse
     {
@@ -109,20 +108,47 @@ class TranslationService
             return new JsonResponse(['error' => $e->getMessage()], 500);
         }
     }
+
     public function saveToJsonFile(string $tableName, string $filePath): void
     {
         $data = $this->getAllValuesFromTable($tableName);
         $jsonData = json_encode($data);
         $this->filesystem->dumpFile($filePath, $jsonData);
     }
+
     public function getAllValuesFromTable($tableName)
     {
         if (!preg_match('/^[a-zA-Z0-9_]+$/', $tableName)) {
             throw new \InvalidArgumentException('Nom de table invalide.');
         }
-        $sql = "SELECT * FROM " . $tableName;
-        $stmt = $this->connection->prepare($sql);
-        $result = $stmt->executeQuery();
-        return $result->fetchAllAssociative();
+        $result = $this->connection->createQueryBuilder()
+            ->select('*')
+            ->from($tableName)
+            ->fetchAllAssociative();
+
+        return $result;
     }
+
+
+    public function getCacheTable($tableName): ?array
+    {
+        $contentJson = $this->getFileContentTable($tableName);
+        if ($contentJson === null) {
+            return null;
+        }
+        return json_decode($contentJson, true);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFileContentTable($tableName): ?string
+    {
+        $file = $this->parameterBag->get('trans_dir').$tableName.'.json';
+        if (file_exists($file) === false) {
+            return null;
+        }
+        return file_get_contents($file);
+    }
+
 }
