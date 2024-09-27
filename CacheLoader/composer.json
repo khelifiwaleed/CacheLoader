@@ -1,0 +1,34 @@
+{
+    "name": "cachemaster/cache-loader",
+    "version": "0.2.0",
+    "minimum-stability": "stable",
+    "description": "this component loads translations from the database and stores them in a cache for later use",
+    "type": "package",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "CacheLoader\\CacheLoaderBundle\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "KHELIFI Walid",
+            "email": "khelifiwaleed@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2 || ^8.0",
+        "symfony/yaml": "6.0.*",
+        "doctrine/dbal": "^4.1",
+        "doctrine/doctrine-bundle": "*",
+        "doctrine/orm": "*"
+    },
+    "require-dev": {
+        "symfony/maker-bundle": "*"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CacheLoader\\CacheLoaderBundle\\Tests\\": "Tests/"
+        }
+    }
+}
