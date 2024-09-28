@@ -1,6 +1,6 @@
 {
     "name": "cachemaster/cache-loader",
-    "version": "1.0.2",
+    "version": "1.1.2",
     "minimum-stability": "dev",
     "prefer-stable": true,
     "description": "CacheMaster loads translations from the database and stores them in a cache for later use",
