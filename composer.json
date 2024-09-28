@@ -25,10 +25,7 @@
     ],
     "require": {
         "php": ">=8.2",
-        "ext-json": "*",
-        "doctrine/dbal": "^4.1",
-        "doctrine/doctrine-bundle": "*",
-        "doctrine/orm": "*"
+        "ext-json": "*"
     },
     "require-dev": {
         "symfony/maker-bundle": "*"
