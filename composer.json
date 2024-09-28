@@ -25,7 +25,6 @@
     ],
     "require": {
         "php": ">=8.2",
-        "cachemaster/cache-loader": "*",
         "ext-json": "*",
         "twig/twig": "^3.0",
         "doctrine/dbal": "^3.0",
