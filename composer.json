@@ -2,7 +2,7 @@
     "name": "cachemaster/cache-loader",
     "version": "0.3.0",
     "minimum-stability": "stable",
-    "description": "this component loads translations from the database and stores them in a cache for later use",
+    "description": "This component loads translations from the database and stores them in a cache for later use",
     "type": "package",
     "license": "MIT",
     "autoload": {
