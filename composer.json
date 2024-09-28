@@ -26,7 +26,10 @@
     "require": {
         "php": ">=8.2",
         "ext-json": "*",
-        "twig/twig": "^3.0"
+        "twig/twig": "^3.0",
+        "doctrine/dbal": "^3.0",
+        "doctrine/doctrine-bundle": "^2.5",
+        "doctrine/orm": "^2.9"
     },
     "require-dev": {
         "symfony/maker-bundle": "*"
