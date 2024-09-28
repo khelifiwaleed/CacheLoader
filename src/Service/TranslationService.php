@@ -3,12 +3,11 @@
 
 namespace CacheLoader\CacheLoaderBundle\Service;
 
-use ReflectionClass;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Doctrine\DBAL\Query\QueryBuilder;
+
 
 /**
  * Class TranslationService
@@ -22,9 +21,16 @@ class TranslationService
      */
     private $parameterBag;
 
+    /**
+     * @var Connection
+     */
     private $connection;
 
+    /**
+     * @var Filesystem
+     */
     private $filesystem;
+
     /**
      * AppExtension constructor.
      *
@@ -40,67 +46,14 @@ class TranslationService
         $this->filesystem = $filesystem;
     }
 
-
-
-
+ 
     /**
-     * @return array|null
+     * @return JsonResponse
      */
-    public function getTranslationFile(): ?array
-    {
-        $contentJson = $this->getFileContent();
-        if ($contentJson === null) {
-            return null;
-        }
-        return json_decode($contentJson, true);
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getFileContent(): ?string
-    {
-        $file = $this->parameterBag->get('trans_dir').'translation.json';
-        if (file_exists($file) === false) {
-            return null;
-        }
-        return file_get_contents($file);
-    }
-
-    public function createContentFile (array $array, $fileName): JsonResponse
-    {
-        foreach ($array as $item){
-            $entityArray[] = $this->convert($item);
-        }
-        try {
-            $filePath = __DIR__ . '/../../../../var/translations/' . $fileName . '.json';
-            $jsonData = json_encode(array_shift($entityArray));
-            $this->filesystem->dumpFile($filePath, $jsonData);
-            return new JsonResponse(['message' => 'Données exportées avec succès dans ' . $filePath]);
-        } catch (\Exception $e) {
-            return new JsonResponse(['error' => $e->getMessage()], 500);
-        }
-    }
-
-    public function convert(object $object): array
-    {
-        $reflection = new ReflectionClass($object);
-        $properties = $reflection->getProperties();
-        $data = [];
-        foreach ($properties as $property) {
-            $data[$property->getName()] = $property->getValue($object);
-        }
-
-        return $data;
-    }
-
-
-
-
     public function exportTableToJson(string $tableName): JsonResponse
     {
         try {
-            $filePath = __DIR__ . '/../../../../var/translations/' . $tableName . '.json';
+            $filePath = $this->parameterBag->get('trans_dir').$tableName.'.json';
             $this->saveToJsonFile($tableName, $filePath);
 
             return new JsonResponse(['message' => 'Données exportées avec succès dans ' . $filePath]);
@@ -109,6 +62,9 @@ class TranslationService
         }
     }
 
+    /**
+     * @return void
+     */
     public function saveToJsonFile(string $tableName, string $filePath): void
     {
         $data = $this->getAllValuesFromTable($tableName);
@@ -116,7 +72,10 @@ class TranslationService
         $this->filesystem->dumpFile($filePath, $jsonData);
     }
 
-    public function getAllValuesFromTable($tableName)
+    /**
+     * @return array|null
+     */
+    public function getAllValuesFromTable($tableName): ?array
     {
         if (!preg_match('/^[a-zA-Z0-9_]+$/', $tableName)) {
             throw new \InvalidArgumentException('Nom de table invalide.');
@@ -129,7 +88,9 @@ class TranslationService
         return $result;
     }
 
-
+    /**
+     * @return array|null
+     */
     public function getCacheTable($tableName): ?array
     {
         $contentJson = $this->getFileContentTable($tableName);

@@ -4,6 +4,8 @@ namespace CacheLoader\CacheLoaderBundle\Twig;
 
 
 use CacheLoader\CacheLoaderBundle\Service\TranslationService;
+use CacheLoader\CacheLoaderBundle\Service\TranslationObjectService;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -15,9 +17,24 @@ class AppExtension extends AbstractExtension
      */
     private $translationService;
 
-    public function __construct(TranslationService $translationService)
-    {
+    /**
+     * @var TranslationObjectService
+     */
+    private $translationObjectService;
+
+    /**
+     * @var ParameterBagInterface
+     */
+    private $parameterBag;
+
+    public function __construct(
+        TranslationService $translationService,
+        ParameterBagInterface $parameterBag,
+        TranslationObjectService $translationObjectService
+    ){
         $this->translationService = $translationService;
+        $this->parameterBag = $parameterBag;
+        $this->translationObjectService = $translationObjectService;
     }
 
     /**
@@ -38,7 +55,7 @@ class AppExtension extends AbstractExtension
     public function getCacheLoaderObject($param): array|null
     {
         try {
-            $translationFile = $this->translationService->getTranslationFile();
+            $translationFile = $this->translationObjectService->getTranslationFile();
             $cacheLoader = array_filter($translationFile, function($item) use($param){
                 return $item['LABEL'] === $param ? $item: [];
             });
@@ -55,7 +72,7 @@ class AppExtension extends AbstractExtension
     public function getCacheLoaderTable($table, $param): array|null
     {
         try {
-            $filePath = __DIR__ . '/../../../../var/translations/' . $table . '.json';
+            $filePath = $this->parameterBag->get('trans_dir').$table . '.json';
             if (false === file_exists($filePath)) {
                 $this->translationService->exportTableToJson($table);
             }

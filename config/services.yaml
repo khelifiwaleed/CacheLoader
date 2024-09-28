@@ -13,6 +13,12 @@ services:
       - '@parameter_bag'
     public: true
     autowire: true
+  
+  CacheLoader\CacheLoaderBundle\Service\TranslationObjectService:
+    arguments:
+      - '@parameter_bag'
+    public: true
+    autowire: true
 
   CacheLoader\CacheLoaderBundle\CacheLoaderBundle:
     public: true
@@ -22,5 +28,6 @@ services:
     tags: [ 'twig.extension' ]
     arguments:
       $translationService: '@CacheLoader\CacheLoaderBundle\Service\TranslationService'
+      $parameterBag: '@parameter_bag'
     public: true
     autowire: true
