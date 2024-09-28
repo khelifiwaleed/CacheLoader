@@ -25,7 +25,8 @@
     ],
     "require": {
         "php": ">=8.2",
-        "ext-json": "*"
+        "ext-json": "*",
+        "twig/twig": "^3.0"
     },
     "require-dev": {
         "symfony/maker-bundle": "*"
