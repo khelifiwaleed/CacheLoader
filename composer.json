@@ -1,8 +1,8 @@
 {
-    "name": "cachemaster/cache-loader",
-    "version": "0.3.0",
-    "minimum-stability": "stable",
-    "description": "This component loads translations from the database and stores them in a cache for later use",
+    "name": "cachemaster/loader-cache",
+    "version": "1.0.0",
+    "minimum-stability": "dev",
+    "description": "CacheMaster loads translations from the database and stores them in a cache for later use",
     "type": "package",
     "license": "MIT",
     "autoload": {
@@ -10,16 +10,21 @@
             "CacheLoader\\CacheLoaderBundle\\": "src/"
         }
     },
+    "keywords": [
+        "framework",
+        "CacheLoader",
+        "load cache"
+    ],
     "authors": [
         {
             "name": "KHELIFI Walid",
-            "email": "khelifiwaleed@gmail.com"
+            "email": "khelifiwaleed@gmail.com",
+            "homepage": "https://github.com/khelifiwaleed"
         }
     ],
     "require": {
         "php": ">=8.2",
-        "another-vendor/package": "1.*",
-        "symfony/yaml": "6.0.*",
+        "ext-json": "*",
         "doctrine/dbal": "^4.1",
         "doctrine/doctrine-bundle": "*",
         "doctrine/orm": "*"
