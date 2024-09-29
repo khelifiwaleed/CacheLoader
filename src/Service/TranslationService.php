@@ -78,13 +78,16 @@ class TranslationService
     public function getAllValuesFromTable($tableName): ?array
     {
         if (!preg_match('/^[a-zA-Z0-9_]+$/', $tableName)) {
-            throw new \InvalidArgumentException('Nom de table invalide.');
+            throw new \InvalidArgumentException('Invalid tabel name.');
         }
-        $result = $this->connection->createQueryBuilder()
+        try{
+            $result = $this->connection->createQueryBuilder()
             ->select('*')
             ->from($tableName)
             ->fetchAllAssociative();
-
+        }catch(\EXCEPTION $e){
+            throw new \InvalidArgumentException($e);
+        }
         return $result;
     }
 

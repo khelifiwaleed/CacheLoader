@@ -26,6 +26,7 @@
     "require": {
         "php": ">=8.2",
         "ext-json": "*",
+        "symfony/twig-bundle": "6.4.*",
         "twig/twig": "^3.0",
         "doctrine/dbal": "^3.0",
         "doctrine/doctrine-bundle": "^2.5",
