@@ -77,7 +77,7 @@ class TranslationObjectService
             $filePath = $this->parameterBag->get('trans_dir').$fileName . '.json';
             $jsonData = json_encode(array_shift($entityArray));
             $this->filesystem->dumpFile($filePath, $jsonData);
-            return new JsonResponse(['message' => 'Données exportées avec succès dans ' . $filePath]);
+            return new JsonResponse(['message' => 'Data successfully exported to ' . $filePath]);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], 500);
         }

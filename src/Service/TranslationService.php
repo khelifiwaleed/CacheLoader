@@ -56,7 +56,7 @@ class TranslationService
             $filePath = $this->parameterBag->get('trans_dir').$tableName.'.json';
             $this->saveToJsonFile($tableName, $filePath);
 
-            return new JsonResponse(['message' => 'Données exportées avec succès dans ' . $filePath]);
+            return new JsonResponse(['message' => 'Data successfully exported to ' . $filePath]);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], 500);
         }
